@@ -1,0 +1,36 @@
+syntax = "proto3";
+package key.v1;
+option go_package = "github.com/retro-board/protos/gen/go/key/v1";
+
+message KeyResponse {
+  string user = 1;
+  string retro = 2;
+  string timer = 3;
+  string company = 4;
+  string billing = 5;
+}
+
+message ValidResponse {
+  bool valid = 1;
+}
+
+message CreateRequest {
+  string user_id = 1;
+  string service_key = 2;
+}
+
+message GetRequest {
+  string user_id = 1;
+}
+
+message ValidateRequest {
+  string user_id = 1;
+  string key = 2;
+}
+
+service KeyService {
+  rpc Create(CreateRequest) returns (KeyResponse);
+  rpc Get(GetRequest) returns (KeyResponse);
+  rpc Validate(ValidateRequest) returns (ValidResponse);
+}
+
