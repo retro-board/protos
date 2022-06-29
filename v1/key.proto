@@ -21,11 +21,13 @@ message CreateRequest {
 
 message GetRequest {
   string user_id = 1;
+  string service_key = 2;
 }
 
 message ValidateRequest {
   string user_id = 1;
-  string key = 2;
+  string service_key = 2;
+  string check_key = 3;
 }
 
 service KeyService {
