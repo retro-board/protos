@@ -1,0 +1,42 @@
+syntax = "proto3";
+package permissions.v1;
+option go_package = "github.com/retro-board/protos/gen/go/permissions/v1";
+
+message CreateRequest {
+  string UserID  = 1;
+  string APIKey  = 2;
+  string Action  = 3;
+  string Resource  = 4;
+  string Filter  = 5;
+}
+
+message GetRequest {
+  string UserID = 1;
+  string APIKey = 2;
+}
+
+message AllowedRequest {
+  string UserID = 1;
+  string APIKey = 2;
+  string Action = 3;
+  string Resource = 4;
+  string Filter = 5;
+}
+
+message CreateResponse {
+  bool Created = 1;
+}
+
+message GetResponse {
+  map <string, string> Permissions = 1;
+}
+
+message AllowedResponse {
+  bool Allowed = 1;
+}
+
+service PermissionsService {
+  rpc Create(CreateRequest) returns (CreateResponse);
+  rpc Get(GetRequest) returns (GetResponse);
+  rpc CanDo(AllowedRequest) returns (AllowedResponse);
+}

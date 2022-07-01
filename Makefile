@@ -3,7 +3,7 @@ setup:
 	mkdir -p generated
 
 .PHONY: generate
-generate: key-service
+generate: key-service permission-service
 
 .PHONY: key-service
 key-service:
@@ -17,6 +17,6 @@ permission-service:
 	protoc -I . \
 		--go_out ./generated --go_opt paths=source_relative \
 		--go-grpc_out ./generated --go-grpc_opt paths=source_relative \
-		v1/permission.proto
+		v1/permissions.proto
 
 

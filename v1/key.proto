@@ -35,4 +35,3 @@ service KeyService {
   rpc Get(GetRequest) returns (KeyResponse);
   rpc Validate(ValidateRequest) returns (ValidResponse);
 }
-
