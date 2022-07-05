@@ -2,7 +2,7 @@ syntax = "proto3";
 package permissions.v1;
 option go_package = "github.com/retro-board/protos/gen/go/permissions/v1";
 
-message CreateRequest {
+message PermissionRequest {
   string UserID  = 1;
   string APIKey  = 2;
   string Action  = 3;
@@ -11,7 +11,7 @@ message CreateRequest {
 }
 
 message MultiRequest {
-  repeated CreateRequest Requests = 1;
+  repeated PermissionRequest Requests = 1;
 }
 
 message GetRequest {
@@ -27,7 +27,7 @@ message AllowedRequest {
   string Filter = 5;
 }
 
-message CreateResponse {
+message PermissionResponse {
   bool Created = 1;
   string status = 99;
 }
@@ -43,8 +43,8 @@ message AllowedResponse {
 }
 
 service PermissionsService {
-  rpc Create(CreateRequest) returns (CreateResponse);
-  rpc MultiCreate(MultiRequest) returns (CreateResponse);
+  rpc Permission(PermissionRequest) returns (PermissionResponse);
+  rpc MultiPermissions(MultiRequest) returns (PermissionResponse);
   rpc Get(GetRequest) returns (GetResponse);
   rpc CanDo(AllowedRequest) returns (AllowedResponse);
 }

@@ -22,8 +22,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PermissionsServiceClient interface {
-	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
-	MultiCreate(ctx context.Context, in *MultiRequest, opts ...grpc.CallOption) (*CreateResponse, error)
+	Permission(ctx context.Context, in *PermissionRequest, opts ...grpc.CallOption) (*PermissionResponse, error)
+	MultiPermissions(ctx context.Context, in *MultiRequest, opts ...grpc.CallOption) (*PermissionResponse, error)
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	CanDo(ctx context.Context, in *AllowedRequest, opts ...grpc.CallOption) (*AllowedResponse, error)
 }
@@ -36,18 +36,18 @@ func NewPermissionsServiceClient(cc grpc.ClientConnInterface) PermissionsService
 	return &permissionsServiceClient{cc}
 }
 
-func (c *permissionsServiceClient) Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
-	out := new(CreateResponse)
-	err := c.cc.Invoke(ctx, "/permissions.v1.PermissionsService/Create", in, out, opts...)
+func (c *permissionsServiceClient) Permission(ctx context.Context, in *PermissionRequest, opts ...grpc.CallOption) (*PermissionResponse, error) {
+	out := new(PermissionResponse)
+	err := c.cc.Invoke(ctx, "/permissions.v1.PermissionsService/Permission", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *permissionsServiceClient) MultiCreate(ctx context.Context, in *MultiRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
-	out := new(CreateResponse)
-	err := c.cc.Invoke(ctx, "/permissions.v1.PermissionsService/MultiCreate", in, out, opts...)
+func (c *permissionsServiceClient) MultiPermissions(ctx context.Context, in *MultiRequest, opts ...grpc.CallOption) (*PermissionResponse, error) {
+	out := new(PermissionResponse)
+	err := c.cc.Invoke(ctx, "/permissions.v1.PermissionsService/MultiPermissions", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,8 +76,8 @@ func (c *permissionsServiceClient) CanDo(ctx context.Context, in *AllowedRequest
 // All implementations must embed UnimplementedPermissionsServiceServer
 // for forward compatibility
 type PermissionsServiceServer interface {
-	Create(context.Context, *CreateRequest) (*CreateResponse, error)
-	MultiCreate(context.Context, *MultiRequest) (*CreateResponse, error)
+	Permission(context.Context, *PermissionRequest) (*PermissionResponse, error)
+	MultiPermissions(context.Context, *MultiRequest) (*PermissionResponse, error)
 	Get(context.Context, *GetRequest) (*GetResponse, error)
 	CanDo(context.Context, *AllowedRequest) (*AllowedResponse, error)
 	mustEmbedUnimplementedPermissionsServiceServer()
@@ -87,11 +87,11 @@ type PermissionsServiceServer interface {
 type UnimplementedPermissionsServiceServer struct {
 }
 
-func (UnimplementedPermissionsServiceServer) Create(context.Context, *CreateRequest) (*CreateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+func (UnimplementedPermissionsServiceServer) Permission(context.Context, *PermissionRequest) (*PermissionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Permission not implemented")
 }
-func (UnimplementedPermissionsServiceServer) MultiCreate(context.Context, *MultiRequest) (*CreateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method MultiCreate not implemented")
+func (UnimplementedPermissionsServiceServer) MultiPermissions(context.Context, *MultiRequest) (*PermissionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MultiPermissions not implemented")
 }
 func (UnimplementedPermissionsServiceServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
@@ -112,38 +112,38 @@ func RegisterPermissionsServiceServer(s grpc.ServiceRegistrar, srv PermissionsSe
 	s.RegisterService(&PermissionsService_ServiceDesc, srv)
 }
 
-func _PermissionsService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateRequest)
+func _PermissionsService_Permission_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PermissionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PermissionsServiceServer).Create(ctx, in)
+		return srv.(PermissionsServiceServer).Permission(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/permissions.v1.PermissionsService/Create",
+		FullMethod: "/permissions.v1.PermissionsService/Permission",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PermissionsServiceServer).Create(ctx, req.(*CreateRequest))
+		return srv.(PermissionsServiceServer).Permission(ctx, req.(*PermissionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PermissionsService_MultiCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _PermissionsService_MultiPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MultiRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PermissionsServiceServer).MultiCreate(ctx, in)
+		return srv.(PermissionsServiceServer).MultiPermissions(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/permissions.v1.PermissionsService/MultiCreate",
+		FullMethod: "/permissions.v1.PermissionsService/MultiPermissions",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PermissionsServiceServer).MultiCreate(ctx, req.(*MultiRequest))
+		return srv.(PermissionsServiceServer).MultiPermissions(ctx, req.(*MultiRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -192,12 +192,12 @@ var PermissionsService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*PermissionsServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Create",
-			Handler:    _PermissionsService_Create_Handler,
+			MethodName: "Permission",
+			Handler:    _PermissionsService_Permission_Handler,
 		},
 		{
-			MethodName: "MultiCreate",
-			Handler:    _PermissionsService_MultiCreate_Handler,
+			MethodName: "MultiPermissions",
+			Handler:    _PermissionsService_MultiPermissions_Handler,
 		},
 		{
 			MethodName: "Get",
