@@ -10,6 +10,10 @@ message CreateRequest {
   string Filter  = 5;
 }
 
+message MultiRequest {
+  repeated CreateRequest Requests = 1;
+}
+
 message GetRequest {
   string UserID = 1;
   string APIKey = 2;
@@ -40,6 +44,7 @@ message AllowedResponse {
 
 service PermissionsService {
   rpc Create(CreateRequest) returns (CreateResponse);
+  rpc MultiCreate(MultiRequest) returns (CreateResponse);
   rpc Get(GetRequest) returns (GetResponse);
   rpc CanDo(AllowedRequest) returns (AllowedResponse);
 }

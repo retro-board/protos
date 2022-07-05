@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PermissionsServiceClient interface {
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
+	MultiCreate(ctx context.Context, in *MultiRequest, opts ...grpc.CallOption) (*CreateResponse, error)
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	CanDo(ctx context.Context, in *AllowedRequest, opts ...grpc.CallOption) (*AllowedResponse, error)
 }
@@ -38,6 +39,15 @@ func NewPermissionsServiceClient(cc grpc.ClientConnInterface) PermissionsService
 func (c *permissionsServiceClient) Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
 	out := new(CreateResponse)
 	err := c.cc.Invoke(ctx, "/permissions.v1.PermissionsService/Create", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *permissionsServiceClient) MultiCreate(ctx context.Context, in *MultiRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
+	out := new(CreateResponse)
+	err := c.cc.Invoke(ctx, "/permissions.v1.PermissionsService/MultiCreate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -67,6 +77,7 @@ func (c *permissionsServiceClient) CanDo(ctx context.Context, in *AllowedRequest
 // for forward compatibility
 type PermissionsServiceServer interface {
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
+	MultiCreate(context.Context, *MultiRequest) (*CreateResponse, error)
 	Get(context.Context, *GetRequest) (*GetResponse, error)
 	CanDo(context.Context, *AllowedRequest) (*AllowedResponse, error)
 	mustEmbedUnimplementedPermissionsServiceServer()
@@ -78,6 +89,9 @@ type UnimplementedPermissionsServiceServer struct {
 
 func (UnimplementedPermissionsServiceServer) Create(context.Context, *CreateRequest) (*CreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+}
+func (UnimplementedPermissionsServiceServer) MultiCreate(context.Context, *MultiRequest) (*CreateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MultiCreate not implemented")
 }
 func (UnimplementedPermissionsServiceServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
@@ -112,6 +126,24 @@ func _PermissionsService_Create_Handler(srv interface{}, ctx context.Context, de
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PermissionsServiceServer).Create(ctx, req.(*CreateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PermissionsService_MultiCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MultiRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PermissionsServiceServer).MultiCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/permissions.v1.PermissionsService/MultiCreate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PermissionsServiceServer).MultiCreate(ctx, req.(*MultiRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -162,6 +194,10 @@ var PermissionsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Create",
 			Handler:    _PermissionsService_Create_Handler,
+		},
+		{
+			MethodName: "MultiCreate",
+			Handler:    _PermissionsService_MultiCreate_Handler,
 		},
 		{
 			MethodName: "Get",
