@@ -25,14 +25,17 @@ message AllowedRequest {
 
 message CreateResponse {
   bool Created = 1;
+  string status = 99;
 }
 
 message GetResponse {
   map <string, string> Permissions = 1;
+  string status = 99;
 }
 
 message AllowedResponse {
   bool Allowed = 1;
+  string status = 99;
 }
 
 service PermissionsService {

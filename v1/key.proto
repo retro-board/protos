@@ -8,10 +8,12 @@ message KeyResponse {
   string timer = 3;
   string company = 4;
   string billing = 5;
+  string status = 99;
 }
 
 message ValidResponse {
   bool valid = 1;
+  string status = 99;
 }
 
 message CreateRequest {
