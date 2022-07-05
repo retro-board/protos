@@ -14,6 +14,12 @@ message MultiRequest {
   repeated PermissionRequest Requests = 1;
 }
 
+message PermissionItem {
+  string Action  = 1;
+  string Resource  = 2;
+  string Filter  = 3;
+}
+
 message GetRequest {
   string UserID = 1;
   string APIKey = 2;
@@ -28,12 +34,12 @@ message AllowedRequest {
 }
 
 message PermissionResponse {
-  bool Created = 1;
+  repeated PermissionItem Permissions = 1;
   string status = 99;
 }
 
 message GetResponse {
-  map <string, string> Permissions = 1;
+  repeated PermissionItem Permissions = 1;
   string status = 99;
 }
 
