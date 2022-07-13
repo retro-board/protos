@@ -26,6 +26,7 @@ type PermissionsServiceClient interface {
 	MultiPermissions(ctx context.Context, in *MultiRequest, opts ...grpc.CallOption) (*PermissionResponse, error)
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	CanDo(ctx context.Context, in *AllowedRequest, opts ...grpc.CallOption) (*AllowedResponse, error)
+	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*PermissionResponse, error)
 }
 
 type permissionsServiceClient struct {
@@ -72,6 +73,15 @@ func (c *permissionsServiceClient) CanDo(ctx context.Context, in *AllowedRequest
 	return out, nil
 }
 
+func (c *permissionsServiceClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*PermissionResponse, error) {
+	out := new(PermissionResponse)
+	err := c.cc.Invoke(ctx, "/permissions.v1.PermissionsService/CreateUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PermissionsServiceServer is the server API for PermissionsService service.
 // All implementations must embed UnimplementedPermissionsServiceServer
 // for forward compatibility
@@ -80,6 +90,7 @@ type PermissionsServiceServer interface {
 	MultiPermissions(context.Context, *MultiRequest) (*PermissionResponse, error)
 	Get(context.Context, *GetRequest) (*GetResponse, error)
 	CanDo(context.Context, *AllowedRequest) (*AllowedResponse, error)
+	CreateUser(context.Context, *CreateUserRequest) (*PermissionResponse, error)
 	mustEmbedUnimplementedPermissionsServiceServer()
 }
 
@@ -98,6 +109,9 @@ func (UnimplementedPermissionsServiceServer) Get(context.Context, *GetRequest) (
 }
 func (UnimplementedPermissionsServiceServer) CanDo(context.Context, *AllowedRequest) (*AllowedResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CanDo not implemented")
+}
+func (UnimplementedPermissionsServiceServer) CreateUser(context.Context, *CreateUserRequest) (*PermissionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
 func (UnimplementedPermissionsServiceServer) mustEmbedUnimplementedPermissionsServiceServer() {}
 
@@ -184,6 +198,24 @@ func _PermissionsService_CanDo_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PermissionsService_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PermissionsServiceServer).CreateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/permissions.v1.PermissionsService/CreateUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PermissionsServiceServer).CreateUser(ctx, req.(*CreateUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PermissionsService_ServiceDesc is the grpc.ServiceDesc for PermissionsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -206,6 +238,10 @@ var PermissionsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CanDo",
 			Handler:    _PermissionsService_CanDo_Handler,
+		},
+		{
+			MethodName: "CreateUser",
+			Handler:    _PermissionsService_CreateUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

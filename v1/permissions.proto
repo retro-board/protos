@@ -10,6 +10,17 @@ message PermissionRequest {
   string Filter  = 5;
 }
 
+message CreateUserRequest {
+  string UserID = 1;
+  enum Level {
+    USER = 0;
+    LEADER = 1;
+    OWNER = 3;
+  };
+  optional Level level = 2;
+  optional string CompanyID = 3;
+}
+
 message MultiRequest {
   repeated PermissionRequest Requests = 1;
 }
@@ -53,4 +64,5 @@ service PermissionsService {
   rpc MultiPermissions(MultiRequest) returns (PermissionResponse);
   rpc Get(GetRequest) returns (GetResponse);
   rpc CanDo(AllowedRequest) returns (AllowedResponse);
+  rpc CreateUser(CreateUserRequest) returns (PermissionResponse);
 }
