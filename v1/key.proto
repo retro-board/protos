@@ -14,7 +14,7 @@ message KeyResponse {
 
 message ValidResponse {
   bool valid = 1;
-  string status = 99;
+  optional string status = 99;
 }
 
 message CreateRequest {

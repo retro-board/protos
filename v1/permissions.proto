@@ -48,17 +48,17 @@ message AllowedRequest {
 
 message PermissionResponse {
   repeated PermissionItem Permissions = 1;
-  string status = 99;
+  optional string status = 99;
 }
 
 message GetResponse {
   repeated PermissionItem Permissions = 1;
-  string status = 99;
+  optional string status = 99;
 }
 
 message AllowedResponse {
   bool Allowed = 1;
-  string status = 99;
+  optional string status = 99;
 }
 
 service PermissionsService {
