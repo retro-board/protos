@@ -11,14 +11,16 @@ message PermissionRequest {
 }
 
 message CreateUserRequest {
-  string UserID = 1;
   enum Level {
     USER = 0;
     LEADER = 1;
     OWNER = 3;
   };
-  optional Level level = 2;
-  optional string CompanyID = 3;
+
+  string UserID = 1;
+  string APIKey = 2;
+  optional Level level = 3;
+  optional string CompanyID = 4;
 }
 
 message MultiRequest {
