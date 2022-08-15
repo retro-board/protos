@@ -9,7 +9,7 @@ message KeyResponse {
   string company = 4;
   string billing = 5;
   string permissions = 6;
-  string status = 99;
+  optional string status = 99;
 }
 
 message ValidResponse {
