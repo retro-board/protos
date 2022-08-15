@@ -62,9 +62,9 @@ message AllowedResponse {
 }
 
 service PermissionsService {
-  rpc Permission(PermissionRequest) returns (PermissionResponse);
+  rpc AddPermission(PermissionRequest) returns (PermissionResponse);
+  rpc RemovePermission(PermissionRequest) returns (PermissionResponse);
   rpc MultiPermissions(MultiRequest) returns (PermissionResponse);
   rpc Get(GetRequest) returns (GetResponse);
   rpc CanDo(AllowedRequest) returns (AllowedResponse);
-  rpc CreateUser(CreateUserRequest) returns (PermissionResponse);
 }
