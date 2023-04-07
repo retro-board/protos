@@ -1,0 +1,70 @@
+syntax = "proto3";
+package permissions.v1;
+option go_package = "github.com/retro-board/protos/gen/go/permissions/v1";
+
+message PermissionRequest {
+  string UserID  = 1;
+  string APIKey  = 2;
+  string Action  = 3;
+  string Resource  = 4;
+  string Filter  = 5;
+}
+
+message CreateUserRequest {
+  enum Level {
+    USER = 0;
+    LEADER = 1;
+    OWNER = 3;
+  };
+
+  string UserID = 1;
+  string APIKey = 2;
+  optional Level level = 3;
+  optional string CompanyID = 4;
+}
+
+message MultiRequest {
+  repeated PermissionRequest Requests = 1;
+}
+
+message PermissionItem {
+  string Action  = 1;
+  string Resource  = 2;
+  string Filter  = 3;
+}
+
+message GetRequest {
+  string UserID = 1;
+  string APIKey = 2;
+}
+
+message AllowedRequest {
+  string UserID = 1;
+  string APIKey = 2;
+  string Action = 3;
+  string Resource = 4;
+  string Filter = 5;
+}
+
+message PermissionResponse {
+  repeated PermissionItem Permissions = 1;
+  optional string status = 99;
+}
+
+message GetResponse {
+  repeated PermissionItem Permissions = 1;
+  optional string status = 99;
+}
+
+message AllowedResponse {
+  bool Allowed = 1;
+  optional string status = 99;
+}
+
+service PermissionsService {
+  rpc AddPermission(PermissionRequest) returns (PermissionResponse);
+  rpc RemovePermission(PermissionRequest) returns (PermissionResponse);
+  rpc MultiPermissions(MultiRequest) returns (PermissionResponse);
+  rpc Get(GetRequest) returns (GetResponse);
+  rpc CanDo(AllowedRequest) returns (AllowedResponse);
+}

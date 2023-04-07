@@ -1,0 +1,17 @@
+syntax = "proto3";
+package billing.v1;
+option go_package = "github.com/retro-board/protos/gen/go/billing/v1";
+
+message BillingResponse {
+  bool allowed = 1;
+  optional string status = 99;
+}
+
+message BillingRequest {
+  string user_id = 1;
+  string company_id = 2;
+}
+
+service BillingService {
+  rpc Check(BillingRequest) returns (BillingResponse) {}
+}
